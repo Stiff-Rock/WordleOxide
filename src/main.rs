@@ -12,6 +12,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         loop {
             let mut user_select = String::new();
+
             stdin()
                 .read_line(&mut user_select)
                 .expect("Failed to read input");
@@ -47,7 +48,7 @@ pub fn print_options() {
     println!("2. LaPalabraDelDía");
     println!("3. Exit");
     print!("Selection: ");
-    stdout().flush().expect("Error cleaning info out");
+    stdout().flush().unwrap();
 }
 
 pub fn pause() {
