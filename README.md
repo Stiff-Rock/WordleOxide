@@ -1,2 +1,2 @@
 # WorldeOxide
-Worlde game in terminal made with Rust
+Play the current Wordle in your terminal! (Currently available in English and Spanish).
