@@ -1,6 +1,8 @@
 use std::{
     cell::LazyCell,
+    collections::HashMap,
     io::{Write, stdin, stdout},
+    usize,
 };
 
 const INIT_BOARD: LazyCell<Vec<String>> = LazyCell::new(|| vec!["XXXXX".to_string(); 6]);
@@ -65,20 +67,33 @@ fn print_board(board: &Vec<String>) {
 }
 
 fn compare_attempt(attempt: &String, wordle: &String, tries: &usize, board: &mut Vec<String>) {
-    let mut new_row = String::new();
+    let mut new_letters_row: String = String::new();
 
-    // TODO: FIX MULTIPLE LETTER CASES AND DONT MARK AS YELLOW REPEATED LETTERS PREVOIUSLY MARKED AS GREEN IN THE SAME WORD
-    for (_, (attempt_char, wordle_char)) in attempt.chars().zip(wordle.chars()).enumerate() {
-        if attempt_char == wordle_char {
-            let exact_letter = format!("{}{}{}", GREEN, attempt_char, RESET);
-            new_row.push_str(&exact_letter);
-        } else if wordle.contains(attempt_char) {
-            let present_letter = format!("{}{}{}", YELLOW, attempt_char, RESET);
-            new_row.push_str(&present_letter);
+    let mut chars_frequency: HashMap<char, usize> = HashMap::new();
+    for wordle_char in wordle.chars() {
+        *chars_frequency.entry(wordle_char).or_insert(0) += 1;
+    }
+
+    // TODO: IT IS NOT PERFECT. IF WORD IS 'DEUCE' AND YOU INPUT 'EEEEE' IT WILL LOOK LIKE 'E(Y when it shouln't be)|E(G)|E(X)|E(X)|E(X when it should be G)'
+    for (attempt_char, wordle_char) in attempt.chars().zip(wordle.chars()) {
+        let char_freq_count = chars_frequency.get(&attempt_char).unwrap_or(&0);
+
+        if *char_freq_count > 0 {
+            chars_frequency
+                .entry(attempt_char)
+                .and_modify(|count| *count -= 1);
+
+            if attempt_char == wordle_char {
+                let exact_letter = format!("{}{}{}", GREEN, attempt_char, RESET);
+                new_letters_row.push_str(&exact_letter);
+            } else {
+                let present_letter: String = format!("{}{}{}", YELLOW, attempt_char, RESET);
+                new_letters_row.push_str(&present_letter);
+            }
         } else {
-            new_row.push_str(&attempt_char.to_string());
+            new_letters_row.push_str(&attempt_char.to_string());
         }
     }
 
-    board[*tries] = new_row;
+    board[*tries] = new_letters_row;
 }
