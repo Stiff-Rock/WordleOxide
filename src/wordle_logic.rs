@@ -67,33 +67,53 @@ fn print_board(board: &Vec<String>) {
 }
 
 fn compare_attempt(attempt: &String, wordle: &String, tries: &usize, board: &mut Vec<String>) {
-    let mut new_letters_row: String = String::new();
+    let mut new_letters_row: Vec<String> = Vec::new();
 
     let mut chars_frequency: HashMap<char, usize> = HashMap::new();
     for wordle_char in wordle.chars() {
         *chars_frequency.entry(wordle_char).or_insert(0) += 1;
     }
 
-    // TODO: IT IS NOT PERFECT. IF WORD IS 'DEUCE' AND YOU INPUT 'EEEEE' IT WILL LOOK LIKE 'E(Y when it shouln't be)|E(G)|E(X)|E(X)|E(X when it should be G)'
-    for (attempt_char, wordle_char) in attempt.chars().zip(wordle.chars()) {
-        let char_freq_count = chars_frequency.get(&attempt_char).unwrap_or(&0);
+    let attempt_chars: Vec<char> = attempt.chars().collect();
+    let wordle_chars: Vec<char> = wordle.chars().collect();
+    let len = attempt_chars.len();
 
-        if *char_freq_count > 0 {
-            chars_frequency
-                .entry(attempt_char)
-                .and_modify(|count| *count -= 1);
+    for i in 0..len {
+        let char_freq_count = chars_frequency.get(&attempt_chars[i]).unwrap_or(&0);
 
-            if attempt_char == wordle_char {
-                let exact_letter = format!("{}{}{}", GREEN, attempt_char, RESET);
-                new_letters_row.push_str(&exact_letter);
-            } else {
-                let present_letter: String = format!("{}{}{}", YELLOW, attempt_char, RESET);
-                new_letters_row.push_str(&present_letter);
+        if attempt_chars[i] == wordle_chars[i] {
+            let exact_letter = format!("{}{}{}", GREEN, attempt_chars[i], RESET);
+
+            if *char_freq_count > 0 {
+                chars_frequency
+                    .entry(attempt_chars[i])
+                    .and_modify(|count| *count -= 1);
             }
+
+            new_letters_row.push(exact_letter);
         } else {
-            new_letters_row.push_str(&attempt_char.to_string());
+            new_letters_row.push("-".to_string());
         }
     }
 
-    board[*tries] = new_letters_row;
+    for i in 0..len {
+        if new_letters_row[i] != "-".to_string() {
+            continue;
+        }
+
+        let char_freq_count = chars_frequency.get(&attempt_chars[i]).unwrap_or(&0);
+
+        if *char_freq_count > 0 {
+            chars_frequency
+                .entry(attempt_chars[i])
+                .and_modify(|count| *count -= 1);
+
+            let present_letter: String = format!("{}{}{}", YELLOW, attempt_chars[i], RESET);
+            new_letters_row[i] = present_letter;
+        } else {
+            new_letters_row[i] = attempt_chars[i].to_string();
+        }
+    }
+
+    board[*tries] = new_letters_row.join("");
 }
