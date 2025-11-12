@@ -1,6 +1,6 @@
 use std::{
     cell::LazyCell,
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     io::{Write, stdin, stdout},
     usize,
 };
@@ -10,8 +10,9 @@ const INIT_BOARD: LazyCell<Vec<String>> = LazyCell::new(|| vec!["XXXXX".to_strin
 const RESET: &str = "\x1b[0m";
 const GREEN: &str = "\x1b[32m";
 const YELLOW: &str = "\x1b[33m";
+const RED: &str = "\x1b[31m";
 
-pub fn start_game(wordle: String) {
+pub fn start_game(wordle: String, dict: HashSet<String>) {
     let mut board: Vec<String> = INIT_BOARD.clone();
 
     let has_guessed: bool;
@@ -34,6 +35,11 @@ pub fn start_game(wordle: String) {
             .expect("Failed to read input");
 
         attempt = attempt.trim().to_uppercase();
+
+        if !dict.contains(&attempt) {
+            println!("{}Invalid word{}", RED, RESET);
+            continue;
+        }
 
         if attempt == wordle {
             has_guessed = true;

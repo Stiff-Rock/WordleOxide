@@ -2,7 +2,10 @@ mod en_wordle;
 mod es_wordle;
 mod ntp;
 mod wordle_logic;
-use std::io::{Write, stdin, stdout};
+use std::{
+    collections::HashSet,
+    io::{Write, stdin, stdout},
+};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut option_num;
@@ -26,15 +29,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
 
-        let wordle = if option_num == 1 {
-            en_wordle::get_daily_word().map_err(|e| format!("Unable to get today's wordle: {e}"))?
+        let (wordle, dict) = if option_num == 1 {
+            let word = en_wordle::get_daily_word()
+                .map_err(|e| format!("Unable to get today's wordle: {e}"))?;
+
+            let dict = en_wordle::get_word_dictionary().unwrap();
+
+            (word, dict)
         } else if option_num == 2 {
-            es_wordle::get_daily_word().map_err(|e| format!("Unable to get today's wordle: {e}"))?
+            let word = es_wordle::get_daily_word()
+                .map_err(|e| format!("Unable to get today's wordle: {e}"))?;
+
+            let dict: HashSet<String> = HashSet::new(); //es_wordle::get_word_dictionary();
+
+            (word, dict)
         } else {
             break;
         };
 
-        wordle_logic::start_game(wordle);
+        wordle_logic::start_game(wordle, dict);
 
         pause();
     }

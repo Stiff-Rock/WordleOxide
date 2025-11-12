@@ -41,3 +41,7 @@ pub fn get_daily_word() -> Result<String, String> {
 
     Ok(palabra_del_dia.solution.to_uppercase())
 }
+
+pub fn get_word_dictionary() {
+    println!("NOT IMPLEMENTED");
+}
