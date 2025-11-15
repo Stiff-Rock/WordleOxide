@@ -1,7 +1,13 @@
 [package]
 name = "WorldeOxide"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
+authors = ["StiffRock yaguitor@gmail.com"]
+description = "An app that allows you to play either NYT's Wordle or LaPalabradelDia in your CLI. The word of the day in both versions are synchronized with the actual webpages solutions as well as having the same dictionaries to check for valid words."
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Stiff-Rock/WorldeOxide"
+keywords = ["cli", "game", "wordle", "lapalabradeldia", "terminal"]
 
 [dependencies]
 rsntp = "4.1.0"
