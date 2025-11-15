@@ -36,8 +36,8 @@ pub fn start_game(wordle: String, dict: HashSet<String>) {
 
         attempt = attempt.trim().to_uppercase();
 
-        if !dict.contains(&attempt) {
-            println!("{}Invalid word{}", RED, RESET);
+        if !dict.contains(&attempt.to_lowercase()) {
+            println!("{}Invalid word{}\n", RED, RESET);
             continue;
         }
 
@@ -60,9 +60,19 @@ pub fn start_game(wordle: String, dict: HashSet<String>) {
 
     println!();
     if has_guessed {
-        println!("Congratulations!!")
+        let win_msg = match tries {
+            0 => "Genius!",
+            1 => "Magnificent!",
+            2 => "Impressive!",
+            3 => "Splendid!",
+            4 => "Great!",
+            5 => "Phew...",
+            _ => "Wtf?",
+        };
+
+        println!("{win_msg}\nYou guessed the word!!")
     } else {
-        println!("The word was \"{wordle}\"")
+        println!("Game Over!\nThe word was \"{wordle}\"")
     }
 }
 

@@ -1,8 +1,6 @@
-use std::collections::HashSet;
-
-use reqwest::blocking::get;
-
 use crate::ntp::get_formatted_date;
+use reqwest::blocking::get;
+use std::collections::HashSet;
 
 const NYT_API: &str = "https://www.nytimes.com/svc/wordle/v2/";
 const NYT_DICT_URL: &str = "https://www.nytimes.com/games-assets/v2/7196.2448555c603aae8fb1d1.js";
@@ -45,7 +43,6 @@ pub fn get_word_dictionary() -> Result<HashSet<String>, String> {
 
     let dictionary_list = &list_start_sub[0..list_end];
 
-    // TODO: THE DICTIONARY IS NOT WORKING
     let word_set = dictionary_list
         .trim()
         .split("\",\"")

@@ -2,11 +2,14 @@ use chrono::NaiveDate;
 use reqwest::blocking::get;
 use rmp_serde::from_slice;
 use serde::Deserialize;
+use std::collections::HashSet;
 
 use crate::ntp::get_date_native;
 
 const XOR_KEY: &str = "marissa-peral-morchito";
-const BIN_URL: &str = "https://lapalabradeldia.com/solutions/normal.bin";
+
+const BIN_SOLUTIONS_URL: &str = "https://lapalabradeldia.com/solutions/normal.bin";
+const BIN_DICTIONARY_URL: &str = "https://lapalabradeldia.com/words/5.bin";
 
 #[derive(Debug, Deserialize)]
 struct Palabra {
@@ -14,7 +17,7 @@ struct Palabra {
 }
 
 pub fn get_daily_word() -> Result<String, String> {
-    let bin_data = get(BIN_URL)
+    let bin_data = get(BIN_SOLUTIONS_URL)
         .map_err(|e| e.to_string())?
         .bytes()
         .map_err(|e| e.to_string())?
@@ -42,6 +45,15 @@ pub fn get_daily_word() -> Result<String, String> {
     Ok(palabra_del_dia.solution.to_uppercase())
 }
 
-pub fn get_word_dictionary() {
-    println!("NOT IMPLEMENTED");
+pub fn get_word_dictionary() -> Result<HashSet<String>, String> {
+    let bin_data = get(BIN_DICTIONARY_URL)
+        .map_err(|e| e.to_string())?
+        .bytes()
+        .map_err(|e| e.to_string())?
+        .to_vec();
+
+    let master_list: Vec<String> =
+        from_slice(&bin_data).map_err(|e| format!("Error deserializando MessagePack: {}", e))?;
+
+    Ok(master_list.into_iter().collect())
 }
