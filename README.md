@@ -1,10 +1,11 @@
 # WorldeOxide
-Play the current Wordle in your terminal! (Currently available in English and Spanish).
+Play the daily Wordle in your terminal!
 
 ## Features
 
-- Synchronized word of the day and dictionary for valid work checking with the real websites
-- Copy the result and share it with your friends
+- Synchronized Game: Fetches the official daily word and dictionary for valid word checking directly from the original websites.
+- Shareable Results: Copy the result and share it with your friends.
+- Aviable in English (NYT) and Spanish.
 
 ## Installation
 
@@ -20,4 +21,4 @@ WorldeOxide
 ```
 
 ## Disclaimer
-The results and stats are not saved whatsoever
+Results and stats are **not saved** between sessions.
