@@ -1,6 +1,6 @@
 [package]
 name = "WordleOxide"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 authors = ["StiffRock yaguitor@gmail.com"]
 description = "An app that allows you to play either NYT's Wordle or LaPalabradelDia in your CLI. The word of the day in both versions are synchronized with the actual webpages solutions as well as having the same dictionaries to check for valid words."

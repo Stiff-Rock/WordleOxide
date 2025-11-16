@@ -68,12 +68,12 @@ pub fn start_game(
     println!();
     if has_guessed {
         let win_msg = match tries {
-            0 => "Genius!",
-            1 => "Magnificent!",
-            2 => "Impressive!",
-            3 => "Splendid!",
-            4 => "Great!",
-            5 => "Phew...",
+            1 => "Genius!",
+            2 => "Magnificent!",
+            3 => "Impressive!",
+            4 => "Splendid!",
+            5 => "Great!",
+            6 => "Phew...",
             _ => "Wtf?",
         };
 
