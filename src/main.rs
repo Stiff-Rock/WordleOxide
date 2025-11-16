@@ -72,7 +72,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn print_options() {
     println!("\n-- WordleOxide --\n");
-    println!("1. NYT Worlde");
+    println!("1. NYT Wordlde");
     println!("2. LaPalabraDelDía");
     println!("3. Exit");
     print!("Selection: ");

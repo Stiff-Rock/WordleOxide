@@ -1,4 +1,4 @@
-# WorldeOxide
+# WordleOxide
 Play the daily Wordle in your terminal!
 
 ## Features
@@ -11,13 +11,13 @@ Play the daily Wordle in your terminal!
 
 Requires the Rust toolchain (Cargo).
 ```CLI
-cargo install WorldeOxide
+cargo install WordleOxide
 ```
 
 ## Run
 
 ```CLI
-WorldeOxide
+WordleOxide
 ```
 
 ## Disclaimer

@@ -1,12 +1,12 @@
 [package]
-name = "WorldeOxide"
+name = "WordleOxide"
 version = "1.1.0"
 edition = "2024"
 authors = ["StiffRock yaguitor@gmail.com"]
 description = "An app that allows you to play either NYT's Wordle or LaPalabradelDia in your CLI. The word of the day in both versions are synchronized with the actual webpages solutions as well as having the same dictionaries to check for valid words."
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/Stiff-Rock/WorldeOxide"
+repository = "https://github.com/Stiff-Rock/WordleOxide"
 keywords = ["cli", "game", "wordle", "lapalabradeldia", "terminal"]
 
 [dependencies]
@@ -19,5 +19,5 @@ arboard = "3.6.1"
 num-format = "0.4.4"
 
 [[bin]]
-name = "WorldeOxide"
+name = "WordleOxide"
 path = "src/main.rs"
