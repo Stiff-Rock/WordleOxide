@@ -8,14 +8,20 @@ use std::{
 const INIT_BOARD: LazyCell<Vec<String>> = LazyCell::new(|| vec!["XXXXX".to_string(); 6]);
 
 const RESET: &str = "\x1b[0m";
+
 const GREEN: &str = "\x1b[32m";
 const YELLOW: &str = "\x1b[33m";
 const RED: &str = "\x1b[31m";
 
-pub fn start_game(wordle: String, dict: HashSet<String>) {
+pub fn start_game(
+    game_name: &str,
+    word_num: String,
+    wordle: String,
+    dict: HashSet<String>,
+) -> Vec<String> {
     let mut board: Vec<String> = INIT_BOARD.clone();
 
-    let has_guessed: bool;
+    let mut has_guessed: bool = false;
 
     let mut tries: usize = 0;
 
@@ -24,9 +30,12 @@ pub fn start_game(wordle: String, dict: HashSet<String>) {
     loop {
         print_board(&board);
 
+        if has_guessed {
+            break;
+        }
+
         let mut attempt: String = String::new();
 
-        // TODO: Maybe check in the web's dictionary if the word exists
         print!("Your guess: ");
         stdout().flush().unwrap();
 
@@ -43,15 +52,13 @@ pub fn start_game(wordle: String, dict: HashSet<String>) {
 
         if attempt == wordle {
             has_guessed = true;
-            break;
         }
 
         compare_attempt(&attempt, &wordle, &tries, &mut board);
 
         tries += 1;
 
-        if tries >= 6 {
-            has_guessed = false;
+        if tries >= 6 && !has_guessed {
             break;
         }
 
@@ -74,6 +81,16 @@ pub fn start_game(wordle: String, dict: HashSet<String>) {
     } else {
         println!("Game Over!\nThe word was \"{wordle}\"")
     }
+
+    let tries_str = if has_guessed {
+        tries.to_string()
+    } else {
+        "X".to_string()
+    };
+
+    board.insert(0, format!("{} {} {}/6", game_name, word_num, tries_str));
+
+    board
 }
 
 fn print_board(board: &Vec<String>) {

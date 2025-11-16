@@ -16,7 +16,7 @@ struct Palabra {
     solution: String,
 }
 
-pub fn get_daily_word() -> Result<String, String> {
+pub fn get_daily_word() -> Result<(String, usize), String> {
     let bin_data = get(BIN_SOLUTIONS_URL)
         .map_err(|e| e.to_string())?
         .bytes()
@@ -42,7 +42,9 @@ pub fn get_daily_word() -> Result<String, String> {
 
     let palabra_del_dia = &master_list[index];
 
-    Ok(palabra_del_dia.solution.to_uppercase())
+    let wordle = palabra_del_dia.solution.to_uppercase();
+
+    Ok((wordle, index))
 }
 
 pub fn get_word_dictionary() -> Result<HashSet<String>, String> {

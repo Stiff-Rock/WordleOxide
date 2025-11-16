@@ -7,12 +7,13 @@ const NYT_DICT_URL: &str = "https://www.nytimes.com/games-assets/v2/7196.2448555
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
-struct NytApiResponse {
-    solution: String,
+#[derive(Serialize, Deserialize, Debug)]
+pub struct NytApiResponse {
+    pub solution: String,
+    pub days_since_launch: u32,
 }
 
-pub fn get_daily_word() -> Result<String, String> {
+pub fn get_daily_word() -> Result<NytApiResponse, String> {
     let date = get_formatted_date().map_err(|e| e.to_string())?;
 
     let request_url = format!("{NYT_API}{date}.json");
@@ -21,7 +22,7 @@ pub fn get_daily_word() -> Result<String, String> {
         .json()
         .map_err(|e| e.to_string())?;
 
-    Ok(response.solution.to_uppercase())
+    Ok(response)
 }
 
 pub fn get_word_dictionary() -> Result<HashSet<String>, String> {
